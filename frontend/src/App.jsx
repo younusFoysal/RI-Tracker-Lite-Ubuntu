@@ -805,7 +805,7 @@ function AppContent() {
                         </div>
                         <div className="relative dropdown-container slide-in-up">
                             <button
-                                className="p-1.5 rounded-lg hover:bg-white/20 transition-all duration-200"
+                                className="p-1.5 rounded-lg hover:bg-white/20 transition-all duration-200 bg-blue-800 text-white"
                                 onClick={() => setShowDropdown(!showDropdown)}
                             >
                                 <BsThreeDotsVertical className="h-4 w-4" />

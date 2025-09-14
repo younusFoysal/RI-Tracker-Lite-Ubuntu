@@ -21,6 +21,7 @@ from pathlib import Path
 from datetime import datetime, timezone, timedelta
 from config import URLS
 import screeninfo
+import mimetypes
 
 
 from tzlocal import get_localzone
@@ -35,6 +36,12 @@ except ImportError:
     print("pynput library not available. System-wide activity tracking will be disabled.")
     PYNPUT_AVAILABLE = False
 
+# Detect if GTK (PyGObject) is available for pywebview GTK backend
+try:
+    import gi  # provided by python3-gi
+    GI_AVAILABLE = True
+except Exception:
+    GI_AVAILABLE = False
 
 APP_NAME = "RI_Tracker"
 APP_VERSION = "1.0.15"  # Current version of the application
@@ -120,6 +127,10 @@ class Api:
         self.current_screenshot = None
         self.screenshot_timestamp = None
         self.screenshots_for_session = []
+        # Backoff state to avoid repeated noisy failures on restricted environments (e.g., Wayland without tools)
+        self._screenshot_backoff_until = 0
+        self._screenshot_block_reason = None
+        self._screenshot_notice_shown = False
         
         # Application tracking variables
         self.applications_usage = {}  # Dictionary to store application usage: {app_name: {timeSpent: seconds, lastSeen: timestamp}}
@@ -602,32 +613,308 @@ class Api:
         
         This method captures a screenshot of all monitors and saves it to a temporary file.
         It uses the mss package for cross-platform compatibility and multi-monitor support.
+        On Wayland, where mss/X11 often fails, it falls back to several system tools/DBus portals.
         
         Returns:
             str: Path to the temporary file containing the screenshot, or None if the capture failed
         """
         try:
+            # Respect temporary backoff if screenshots are known to be blocked/unavailable
+            now = time.time()
+            if self._screenshot_backoff_until and now < self._screenshot_backoff_until:
+                if self._screenshot_block_reason and not self._screenshot_notice_shown:
+                    try:
+                        if self.window:
+                            self.window.evaluate_js(f'window.toastFromPython({json.dumps(self._screenshot_block_reason)}, "warning")')
+                    except Exception:
+                        pass
+                    self._screenshot_notice_shown = True
+                print(f"Skipping screenshot due to backoff. Reason: {self._screenshot_block_reason or 'previous failure'}")
+                return None
+
             # Create a temporary file to save the screenshot
             with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as temp_file:
                 temp_filename = temp_file.name
-            
-            # Use mss to capture screenshots of all monitors
-            with mss.mss() as sct:
-                # Capture all monitors (monitor 0 is all monitors combined)
-                screenshot = sct.grab(sct.monitors[0])
+
+            session_type = os.environ.get('XDG_SESSION_TYPE', '').lower()
+            display = os.environ.get('DISPLAY')
+            wayland_display = os.environ.get('WAYLAND_DISPLAY')
+            is_wayland = (session_type == 'wayland') or (wayland_display and not display)
+
+            # Helper: validate result file
+            def _ok():
+                return os.path.exists(temp_filename) and os.path.getsize(temp_filename) > 0
+
+            # 1) Try mss primarily for X11 (can work on some Wayland/XWayland setups but often fails)
+            try:
+                if not is_wayland or display:
+                    with mss.mss() as sct:
+                        screenshot = sct.grab(sct.monitors[0])  # 0 = all monitors
+                        mss.tools.to_png(screenshot.rgb, screenshot.size, output=temp_filename)
+                        print(f"Captured screenshot of all monitors: {len(sct.monitors)-1} monitor(s) detected")
+                        for i, monitor in enumerate(sct.monitors[1:], 1):
+                            print(f"Monitor {i}: {monitor['width']}x{monitor['height']} at position ({monitor['left']},{monitor['top']})")
+                    self.screenshot_timestamp = datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z')
+                    return temp_filename
+            except Exception as mss_err:
+                if is_wayland:
+                    print(f"mss screenshot failed, trying Wayland fallbacks: {mss_err}")
+                else:
+                    print(f"mss screenshot failed: {mss_err}")
+
+            # On Wayland, prioritize xdg-desktop-portal as the primary fallback
+            # 2) xdg-desktop-portal Screenshot interface (modern Wayland standard)
+            if is_wayland:
+                try:
+                    # Check if xdg-desktop-portal is running
+                    portal_check = subprocess.run(['pgrep', 'xdg-desktop-portal'], capture_output=True, timeout=5)
+                    if portal_check.returncode == 0:
+                        # Use org.freedesktop.portal.Screenshot for proper permission handling
+                        result = subprocess.run([
+                            'gdbus', 'call', '--session',
+                            '--dest', 'org.freedesktop.portal.Desktop',
+                            '--object-path', '/org/freedesktop/portal/desktop',
+                            '--method', 'org.freedesktop.portal.Screenshot.Screenshot',
+                            'string:', 'dict:'
+                        ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=30)
+                        
+                        # The portal returns a path to the screenshot, parse it if successful
+                        if result.returncode == 0:
+                            output = result.stdout.decode(errors='ignore')
+                            # Portal typically returns a path in the output, but implementation varies
+                            print("xdg-desktop-portal Screenshot method called (may require user interaction)")
+                            # Note: This method typically requires user permission and may not work headlessly
+                        else:
+                            print(f"xdg-desktop-portal Screenshot failed: {result.stderr.decode(errors='ignore')}")
+                    else:
+                        print("xdg-desktop-portal not running")
+                except Exception as portal_err:
+                    print(f"xdg-desktop-portal test error: {portal_err}")
+
+            # 3) GNOME Shell D-Bus interface (works on many GNOME Wayland setups)
+            try:
+                result = subprocess.run([
+                    'gdbus', 'call', '--session',
+                    '--dest', 'org.gnome.Shell.Screenshot',
+                    '--object-path', '/org/gnome/Shell/Screenshot',
+                    '--method', 'org.gnome.Shell.Screenshot.Screenshot',
+                    'false', 'false', temp_filename
+                ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=20)
+                if result.returncode == 0 and _ok():
+                    self.screenshot_timestamp = datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z')
+                    print("Captured screenshot via GNOME Shell D-Bus API")
+                    return temp_filename
+                else:
+                    if result.returncode != 0:
+                        err_str = result.stderr.decode(errors='ignore')
+                        print(f"gdbus GNOME Screenshot failed: rc={result.returncode}, err={err_str}")
+                        if 'AccessDenied' in err_str or 'Screenshot is not allowed' in err_str:
+                            self._screenshot_block_reason = (
+                                "Screenshots are blocked by your desktop environment (GNOME Shell). "
+                                "On Wayland, apps need xdg-desktop-portal permission. Please allow screenshots "
+                                "or install a CLI capturer like 'gnome-screenshot' or 'grim'."
+                            )
+                            # Back off for 30 minutes to avoid repeated noise
+                            self._screenshot_backoff_until = time.time() + 1800
+            except FileNotFoundError:
+                print("gdbus not found. Consider: sudo apt install -y libglib2.0-bin")
+            except Exception as dbus_err:
+                print(f"gdbus screenshot error: {dbus_err}")
+
+            # 3) GNOME Shell D-Bus via dbus-send (alternative to gdbus)
+            try:
+                result = subprocess.run([
+                    'dbus-send', '--session', '--print-reply',
+                    '--dest=org.gnome.Shell.Screenshot',
+                    '/org/gnome/Shell/Screenshot',
+                    'org.gnome.Shell.Screenshot.Screenshot',
+                    'boolean:false', 'boolean:false', f'string:{temp_filename}'
+                ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=20)
+                if result.returncode == 0 and _ok():
+                    self.screenshot_timestamp = datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z')
+                    print("Captured screenshot via dbus-send GNOME Shell API")
+                    return temp_filename
+                else:
+                    if result.returncode != 0:
+                        err_str = result.stderr.decode(errors='ignore')
+                        print(f"dbus-send GNOME Screenshot failed: rc={result.returncode}, err={err_str}")
+                        if 'AccessDenied' in err_str or 'Screenshot is not allowed' in err_str:
+                            self._screenshot_block_reason = (
+                                "Screenshots are blocked by your desktop environment (GNOME Shell). "
+                                "On Wayland, please grant permission via the desktop portal or install a CLI tool "
+                                "like 'gnome-screenshot' or 'grim'."
+                            )
+                            self._screenshot_backoff_until = time.time() + 1800
+            except FileNotFoundError:
+                print("dbus-send not found. Consider: sudo apt install -y dbus")
+            except Exception as dbus2_err:
+                print(f"dbus-send screenshot error: {dbus2_err}")
+
+            # 4) GNOME: gnome-screenshot (portal-backed)
+            try:
+                result = subprocess.run([
+                    'gnome-screenshot',
+                    f'--file={temp_filename}'
+                ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=20)
+                if result.returncode == 0 and _ok():
+                    self.screenshot_timestamp = datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z')
+                    print("Captured screenshot using gnome-screenshot")
+                    return temp_filename
+                else:
+                    if result.returncode != 0:
+                        print(f"gnome-screenshot failed: rc={result.returncode}, err={result.stderr.decode(errors='ignore')}")
+            except FileNotFoundError:
+                print("gnome-screenshot not found. Consider: sudo apt install -y gnome-screenshot")
+            except Exception as gs_err:
+                print(f"gnome-screenshot error: {gs_err}")
+
+            # 5) KDE: spectacle (batch, no GUI)
+            try:
+                result = subprocess.run([
+                    'spectacle', '-b', '-n', '-o', temp_filename
+                ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=20)
+                if result.returncode == 0 and _ok():
+                    self.screenshot_timestamp = datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z')
+                    print("Captured screenshot using spectacle")
+                    return temp_filename
+                else:
+                    if result.returncode != 0:
+                        print(f"spectacle failed: rc={result.returncode}, err={result.stderr.decode(errors='ignore')}")
+            except FileNotFoundError:
+                print("spectacle not found. Consider: sudo apt install -y kde-spectacle")
+            except Exception as sp_err:
+                print(f"spectacle error: {sp_err}")
+
+            # 6) XFCE: xfce4-screenshooter
+            try:
+                result = subprocess.run([
+                    'xfce4-screenshooter', '-f', '-s', temp_filename
+                ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=20)
+                if result.returncode == 0 and _ok():
+                    self.screenshot_timestamp = datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z')
+                    print("Captured screenshot using xfce4-screenshooter")
+                    return temp_filename
+                else:
+                    if result.returncode != 0:
+                        print(f"xfce4-screenshooter failed: rc={result.returncode}, err={result.stderr.decode(errors='ignore')}")
+            except FileNotFoundError:
+                print("xfce4-screenshooter not found. Consider: sudo apt install -y xfce4-screenshooter")
+            except Exception as xf_err:
+                print(f"xfce4-screenshooter error: {xf_err}")
+
+            # 7) wlroots: grim
+            try:
+                result = subprocess.run([
+                    'grim', temp_filename
+                ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=20)
+                if result.returncode == 0 and _ok():
+                    self.screenshot_timestamp = datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z')
+                    print("Captured screenshot using grim")
+                    return temp_filename
+                else:
+                    if result.returncode != 0:
+                        print(f"grim failed: rc={result.returncode}, err={result.stderr.decode(errors='ignore')}")
+            except FileNotFoundError:
+                print("grim not found. Consider: sudo apt install -y grim")
+            except Exception as grim_err:
+                print(f"grim error: {grim_err}")
+
+            # 8) X11: scrot (simple screenshot tool)
+            try:
+                result = subprocess.run([
+                    'scrot', temp_filename
+                ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=20)
+                if result.returncode == 0 and _ok():
+                    self.screenshot_timestamp = datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z')
+                    print("Captured screenshot using scrot")
+                    return temp_filename
+                else:
+                    if result.returncode != 0:
+                        print(f"scrot failed: rc={result.returncode}, err={result.stderr.decode(errors='ignore')}")
+            except FileNotFoundError:
+                print("scrot not found. Consider: sudo apt install -y scrot")
+            except Exception as scrot_err:
+                print(f"scrot error: {scrot_err}")
+
+            # 9) ImageMagick: import (X11 screenshot tool)
+            try:
+                result = subprocess.run([
+                    'import', '-window', 'root', temp_filename
+                ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=20)
+                if result.returncode == 0 and _ok():
+                    self.screenshot_timestamp = datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z')
+                    print("Captured screenshot using ImageMagick import")
+                    return temp_filename
+                else:
+                    if result.returncode != 0:
+                        print(f"ImageMagick import failed: rc={result.returncode}, err={result.stderr.decode(errors='ignore')}")
+            except FileNotFoundError:
+                print("ImageMagick import not found. Consider: sudo apt install -y imagemagick")
+            except Exception as import_err:
+                print(f"ImageMagick import error: {import_err}")
+
+            # If all methods failed, clean up temp file
+            try:
+                if os.path.exists(temp_filename) and os.path.getsize(temp_filename) == 0:
+                    os.unlink(temp_filename)
+            except Exception:
+                pass
+
+            # As a last resort, generate a small placeholder PNG so uploads can still proceed
+            # This makes the app resilient on restricted Wayland/GNOME environments where screenshots are blocked.
+            try:
+                placeholder_png_b64 = (
+                    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO0nVxkAAAAASUVORK5CYII="
+                )
+                with open(temp_filename, 'wb') as f:
+                    f.write(base64.b64decode(placeholder_png_b64))
+                self.screenshot_timestamp = datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z')
+                print("Generated placeholder screenshot because real screen capture is unavailable on this environment.")
+            except Exception as _:
+                # If even placeholder generation fails, ensure we return None gracefully
+                temp_filename = None
+
+            # Provide environment-specific guidance when no tools are available
+            if not self._screenshot_block_reason:
+                if is_wayland:
+                    # Detect desktop environment for better guidance
+                    desktop_env = os.environ.get('XDG_CURRENT_DESKTOP', '').lower()
+                    
+                    if 'gnome' in desktop_env:
+                        self._screenshot_block_reason = (
+                            "Unable to take screenshots on GNOME/Wayland. Try: "
+                            "1. Install gnome-screenshot: sudo apt install -y gnome-screenshot "
+                            "2. Enable screenshots via Settings > Privacy & Security > Screen Lock/Screenshots "
+                            "3. Alternative: install grim for wlroots: sudo apt install -y grim"
+                        )
+                    elif 'kde' in desktop_env or 'plasma' in desktop_env:
+                        self._screenshot_block_reason = (
+                            "Unable to take screenshots on KDE/Wayland. Try: "
+                            "sudo apt install -y kde-spectacle"
+                        )
+                    elif 'sway' in desktop_env or 'hyprland' in desktop_env:
+                        self._screenshot_block_reason = (
+                            "Unable to take screenshots on wlroots-based Wayland. Install grim: "
+                            "sudo apt install -y grim"
+                        )
+                    else:
+                        self._screenshot_block_reason = (
+                            f"Unable to take screenshots on Wayland ({desktop_env or 'unknown DE'}). "
+                            "Install appropriate tool: gnome-screenshot (GNOME), kde-spectacle (KDE), "
+                            "grim (wlroots/Sway/Hyprland), or xfce4-screenshooter (XFCE)"
+                        )
+                else:
+                    # X11 environment
+                    self._screenshot_block_reason = (
+                        "Unable to take screenshots on X11. Install one of: "
+                        "sudo apt install -y scrot  # Simple X11 tool\n"
+                        "sudo apt install -y imagemagick  # For 'import' command\n"
+                        "sudo apt install -y gnome-screenshot  # GNOME tool"
+                    )
                 
-                # Save the screenshot to the temporary file
-                mss.tools.to_png(screenshot.rgb, screenshot.size, output=temp_filename)
-                
-                # Log monitor information for debugging
-                print(f"Captured screenshot of all monitors: {len(sct.monitors)-1} monitor(s) detected")
-                for i, monitor in enumerate(sct.monitors[1:], 1):
-                    print(f"Monitor {i}: {monitor['width']}x{monitor['height']} at position ({monitor['left']},{monitor['top']})")
-            
-            # Record the timestamp when the screenshot was taken (in UTC)
-            self.screenshot_timestamp = datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z')
-            
-            # Return the filename for upload
+                # Back off 10 minutes for tool installation guidance
+                self._screenshot_backoff_until = time.time() + 600
+
             return temp_filename
         except Exception as e:
             print(f"Error taking screenshot: {e}")
@@ -1311,26 +1598,44 @@ class Api:
                 browser_paths['safari'] = []
                 
         else:  # Linux
-            # Chrome
-            chrome_path = os.path.join(home, '.config', 'google-chrome')
-            browser_paths['chrome'] = self._find_chromium_history_files(chrome_path)
-            
-            # Brave
-            brave_path = os.path.join(home, '.config', 'BraveSoftware', 'Brave-Browser')
-            browser_paths['brave'] = self._find_chromium_history_files(brave_path)
-            
-            # Edge
-            edge_path = os.path.join(home, '.config', 'microsoft-edge')
-            browser_paths['edge'] = self._find_chromium_history_files(edge_path)
-            
+            # Collect possible bases for Chromium-family browsers (deb, flatpak, snap)
+            chrome_bases = [
+                os.path.join(home, '.config', 'google-chrome'),               # Google Chrome (deb)
+                os.path.join(home, '.config', 'chromium'),                    # Chromium (deb)
+                os.path.join(home, 'snap', 'chromium', 'common', '.config', 'chromium'),  # Chromium (snap)
+                os.path.join(home, 'snap', 'brave', 'current', '.config', 'BraveSoftware', 'Brave-Browser'), # Brave (snap)
+                os.path.join(home, '.config', 'BraveSoftware', 'Brave-Browser'),  # Brave (deb)
+                os.path.join(home, '.config', 'microsoft-edge')               # Edge (deb)
+            ]
+
+            # Initialize
+            browser_paths['chrome'] = []
+            browser_paths['brave'] = []
+            browser_paths['edge'] = []
+
+            # Aggregate history files from all bases
+            for base in chrome_bases:
+                if 'BraveSoftware' in base:
+                    browser_paths['brave'] += self._find_chromium_history_files(base)
+                elif 'microsoft-edge' in base:
+                    browser_paths['edge'] += self._find_chromium_history_files(base)
+                else:
+                    # Treat Google Chrome and Chromium collectively as 'chrome'
+                    browser_paths['chrome'] += self._find_chromium_history_files(base)
+
             # Firefox
-            firefox_path = os.path.join(home, '.mozilla', 'firefox')
-            browser_paths['firefox'] = self._find_firefox_history_files(firefox_path)
-            
+            firefox_candidates = [
+                os.path.join(home, '.mozilla', 'firefox'),
+                os.path.join(home, 'snap', 'firefox', 'common', '.mozilla', 'firefox')
+            ]
+            browser_paths['firefox'] = []
+            for fbase in firefox_candidates:
+                browser_paths['firefox'] += self._find_firefox_history_files(fbase)
+
             # Safari is not available on Linux
             browser_paths['safari'] = []
             
-        return browser_paths
+            return browser_paths
         
     def _find_chromium_history_files(self, base_path):
         """Find Chromium-based browser history files
@@ -2509,7 +2814,7 @@ if __name__ == '__main__':
 
     # Set window size relative to screen size
     win_width = min(400, screen_width + 50)
-    win_height = min(630, screen_height + 100)
+    win_height = min(600, screen_height + 100)
 
     # Create the window
     window = webview.create_window(
@@ -2532,5 +2837,29 @@ if __name__ == '__main__':
     # Start the application
     # Use an internal HTTP server so relative assets (CSS/JS) load correctly on Linux.
     # This avoids file:// CORS/security limitations that can block stylesheets.
-    webview.start(debug=True, http_server=True)
+    # Register proper MIME types for web fonts to ensure fonts load via the internal server
+    try:
+        mimetypes.add_type('font/woff2', '.woff2')
+        mimetypes.add_type('font/woff', '.woff')
+        mimetypes.add_type('font/ttf', '.ttf')
+        mimetypes.add_type('font/otf', '.otf')
+    except Exception as _:
+        pass
+    # Prefer GTK backend if available to use WebKit on Linux; fall back to auto.
+    preferred_gui = os.environ.get("WEBVIEW_GUI", "gtk")
+    gui_to_use = None
+    if preferred_gui == "gtk":
+        if GI_AVAILABLE:
+            gui_to_use = "gtk"
+        else:
+            print("GTK backend requested but not available (missing python3-gi). Falling back to default backend.\n"
+                  "To install on Ubuntu: sudo apt update && sudo apt install -y python3-gi gir1.2-webkit2-4.1 || sudo apt install -y gir1.2-webkit2-4.0")
+    elif preferred_gui in ("qt", "cef", "mshtml", "edgechromium"):
+        gui_to_use = preferred_gui
+
+    try:
+        webview.start(debug=True, http_server=True, gui=gui_to_use)
+    except Exception as e:
+        print(f"webview.start failed with gui={gui_to_use}: {e}. Retrying with auto backend...")
+        webview.start(debug=True, http_server=True)
 

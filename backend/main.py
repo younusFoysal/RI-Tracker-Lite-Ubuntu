@@ -709,13 +709,8 @@ class Api:
                         err_str = result.stderr.decode(errors='ignore')
                         print(f"gdbus GNOME Screenshot failed: rc={result.returncode}, err={err_str}")
                         if 'AccessDenied' in err_str or 'Screenshot is not allowed' in err_str:
-                            self._screenshot_block_reason = (
-                                "Screenshots are blocked by your desktop environment (GNOME Shell). "
-                                "On Wayland, apps need xdg-desktop-portal permission. Please allow screenshots "
-                                "or install a CLI capturer like 'gnome-screenshot' or 'grim'."
-                            )
-                            # Back off for 30 minutes to avoid repeated noise
-                            self._screenshot_backoff_until = time.time() + 1800
+                            # Just log the access denial, don't set backoff yet - CLI tools might still work
+                            pass
             except FileNotFoundError:
                 print("gdbus not found. Consider: sudo apt install -y libglib2.0-bin")
             except Exception as dbus_err:
@@ -739,12 +734,8 @@ class Api:
                         err_str = result.stderr.decode(errors='ignore')
                         print(f"dbus-send GNOME Screenshot failed: rc={result.returncode}, err={err_str}")
                         if 'AccessDenied' in err_str or 'Screenshot is not allowed' in err_str:
-                            self._screenshot_block_reason = (
-                                "Screenshots are blocked by your desktop environment (GNOME Shell). "
-                                "On Wayland, please grant permission via the desktop portal or install a CLI tool "
-                                "like 'gnome-screenshot' or 'grim'."
-                            )
-                            self._screenshot_backoff_until = time.time() + 1800
+                            # Just log the access denial, don't set backoff yet - CLI tools might still work
+                            pass
             except FileNotFoundError:
                 print("dbus-send not found. Consider: sudo apt install -y dbus")
             except Exception as dbus2_err:

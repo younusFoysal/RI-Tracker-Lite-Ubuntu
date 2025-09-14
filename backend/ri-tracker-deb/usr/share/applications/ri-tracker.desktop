@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=RI Tracker
+Comment=Remote Integrity Tracker Application
+Exec=/usr/bin/ri-tracker
+Icon=/usr/share/pixmaps/ritracker.png
+Terminal=false
+Categories=Office;Utility;

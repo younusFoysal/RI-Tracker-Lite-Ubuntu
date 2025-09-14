@@ -1,0 +1,11 @@
+Package: ri-tracker
+Version: 1.0.0
+Section: utils
+Priority: optional
+Architecture: amd64
+Depends: 
+Maintainer: Remote Integrity Team <contact@remoteintegrity.com>
+Description: Remote Integrity Tracker Application
+ A comprehensive activity tracking and monitoring application
+ for remote work environments. Tracks application usage,
+ browser history, and system activity.

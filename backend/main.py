@@ -2858,8 +2858,8 @@ if __name__ == '__main__':
         gui_to_use = preferred_gui
 
     try:
-        webview.start(debug=True, http_server=True, gui=gui_to_use)
+        webview.start(debug=DEBUG, http_server=True, gui=gui_to_use)
     except Exception as e:
         print(f"webview.start failed with gui={gui_to_use}: {e}. Retrying with auto backend...")
-        webview.start(debug=True, http_server=True)
+        webview.start(debug=DEBUG, http_server=True)
 

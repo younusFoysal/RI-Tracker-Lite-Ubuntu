@@ -882,16 +882,16 @@ function AppContent() {
                         <div className="flex items-center justify-between">
                             <div className="flex-1">
                                 <div className="flex items-end mb-1">
-                                    <span className={`text-3xl font-bold ${isRunning ? 'text-white' : "text-gray-800" }  tracking-tight font-mono`}>
+                                    <span className={`text-3xl font-bold ${isRunning ? 'text-gray-600' : "text-gray-600" }  tracking-tight font-mono`}>
                                         {displayTime.h}:{displayTime.m}
                                     </span>
-                                    <span className={`text-lg  ml-1 mb-0.5 font-mono ${isRunning ? 'text-gray-100' : "text-gray-400" }`}>
+                                    <span className={`text-lg  ml-1 mb-0.5 font-mono ${isRunning ? 'text-gray-600' : "text-gray-600" }`}>
                                         {displayTime.s}
                                     </span>
                                 </div>
                                 <div className="flex items-center gap-1.5">
                                     <div className={`w-2 h-2 rounded-full ${isRunning ? 'bg-green-300 animate-pulse' : 'bg-gray-300'} transition-colors duration-300`}></div>
-                                    <span className={`text-xs ${isRunning ? 'text-white font-normal' : "text-gray-500 font-medium" } `}>
+                                    <span className={`text-xs ${isRunning ? 'text-gray-600 font-normal' : "text-gray-500 font-medium" } `}>
                                         {isTimerOperationPending ? "Loading..." : isRunning ? 'Active Session' : 'Ready to Start'}
                                     </span>
                                 </div>

@@ -2880,8 +2880,8 @@ if __name__ == '__main__':
     screen_height = monitor.height
 
     # Set window size relative to screen size
-    win_width = min(450, screen_width + 50)
-    win_height = min(690, screen_height + 100)
+    win_width = min(400, screen_width + 50)
+    win_height = min(600, screen_height + 100)
 
     # Create the window
     window = webview.create_window(

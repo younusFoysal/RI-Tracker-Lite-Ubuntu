@@ -217,7 +217,10 @@ class Api:
                     # If not remembering, just set in memory but don't save to database
                     self.auth_token = token
                     self.user_data = user_data
-                window.evaluate_js('window.toastFromPython("Login successful!", "success")')
+                try:
+                    window.evaluate_js('window.toastFromPython("Login successful!", "success")')
+                except:
+                    pass  # Window not available in test environment
                 return {"success": True, "data": data['data']}
             else:
                 return {"success": False, "message": data.get('message', 'Login failed')}
@@ -2877,8 +2880,8 @@ if __name__ == '__main__':
     screen_height = monitor.height
 
     # Set window size relative to screen size
-    win_width = min(400, screen_width + 50)
-    win_height = min(600, screen_height + 100)
+    win_width = min(450, screen_width + 50)
+    win_height = min(690, screen_height + 100)
 
     # Create the window
     window = webview.create_window(
@@ -2909,15 +2912,16 @@ if __name__ == '__main__':
         mimetypes.add_type('font/otf', '.otf')
     except Exception as _:
         pass
-    # Prefer GTK backend if available to use WebKit on Linux; fall back to auto.
+    # Prefer GTK backend if available to use WebKit on Linux; fall back to Qt.
     preferred_gui = os.environ.get("WEBVIEW_GUI", "gtk")
     gui_to_use = None
     if preferred_gui == "gtk":
         if GI_AVAILABLE:
             gui_to_use = "gtk"
         else:
-            print("GTK backend requested but not available (missing python3-gi). Falling back to default backend.\n"
+            print("GTK backend requested but not available (missing python3-gi). Falling back to Qt backend.\n"
                   "To install on Ubuntu: sudo apt update && sudo apt install -y python3-gi gir1.2-webkit2-4.1 || sudo apt install -y gir1.2-webkit2-4.0")
+            gui_to_use = "qt"  # Explicitly use Qt backend instead of None
     elif preferred_gui in ("qt", "cef", "mshtml", "edgechromium"):
         gui_to_use = preferred_gui
 

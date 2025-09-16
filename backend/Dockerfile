@@ -40,10 +40,12 @@ RUN mkdir -p /app/output
 # Build the application
 RUN chmod +x build_linux.sh && ./build_linux.sh
 
-# Copy the built executable to output directory
-RUN cp dist/ri-tracker /app/output/ && cp *.deb /app/output/ 2>/dev/null || true
+# Create a script to copy files to the mounted output directory
+RUN echo '#!/bin/bash' > /app/copy_output.sh && \
+    echo 'cp dist/ri-tracker /app/output/ 2>/dev/null || echo "Warning: ri-tracker executable not found"' >> /app/copy_output.sh && \
+    echo 'cp *.deb /app/output/ 2>/dev/null || echo "Warning: .deb file not found"' >> /app/copy_output.sh && \
+    echo 'ls -la /app/output/' >> /app/copy_output.sh && \
+    echo 'echo "Files copied to output directory"' >> /app/copy_output.sh && \
+    chmod +x /app/copy_output.sh
 
-# Set the output directory as volume
-VOLUME ["/app/output"]
-
-CMD ["echo", "Build completed! Check /app/output for the executable and .deb package"]
+CMD ["/app/copy_output.sh"]

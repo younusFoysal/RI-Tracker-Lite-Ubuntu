@@ -1398,24 +1398,97 @@ class Api:
         # Get current timestamp in ISO format
         current_timestamp = datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z')
         
-        # Define system process patterns to exclude
-        system_process_names = [
-            'System', 'Registry', 'smss.exe', 'csrss.exe', 'wininit.exe', 
-            'services.exe', 'lsass.exe', 'svchost.exe', 'winlogon.exe', 
-            'dwm.exe', 'conhost.exe', 'dllhost.exe', 'taskhostw.exe',
-            'explorer.exe', 'RuntimeBroker.exe', 'ShellExperienceHost.exe',
-            'SearchUI.exe', 'sihost.exe', 'ctfmon.exe', 'WmiPrvSE.exe',
-            'spoolsv.exe', 'SearchIndexer.exe', 'fontdrvhost.exe',
-            'WUDFHost.exe', 'LsaIso.exe', 'SgrmBroker.exe', 'audiodg.exe',
-            'dasHost.exe', 'SearchProtocolHost.exe', 'SearchFilterHost.exe'
-        ]
-        
-        # System directories patterns
-        system_dirs = [
-            '\\Windows\\', '\\Windows\\System32\\', '\\Windows\\SysWOW64\\',
-            '\\Windows\\WinSxS\\', '\\Windows\\servicing\\', '\\ProgramData\\',
-            '\\Program Files\\Common Files\\', '\\Program Files (x86)\\Common Files\\'
-        ]
+        # Define system process patterns to exclude based on platform
+        if platform.system() == "Windows":
+            # Windows system processes
+            system_process_names = [
+                'System', 'Registry', 'smss.exe', 'csrss.exe', 'wininit.exe', 
+                'services.exe', 'lsass.exe', 'svchost.exe', 'winlogon.exe', 
+                'dwm.exe', 'conhost.exe', 'dllhost.exe', 'taskhostw.exe',
+                'explorer.exe', 'RuntimeBroker.exe', 'ShellExperienceHost.exe',
+                'SearchUI.exe', 'sihost.exe', 'ctfmon.exe', 'WmiPrvSE.exe',
+                'spoolsv.exe', 'SearchIndexer.exe', 'fontdrvhost.exe',
+                'WUDFHost.exe', 'LsaIso.exe', 'SgrmBroker.exe', 'audiodg.exe',
+                'dasHost.exe', 'SearchProtocolHost.exe', 'SearchFilterHost.exe'
+            ]
+            
+            # Windows system directories patterns
+            system_dirs = [
+                '\\Windows\\', '\\Windows\\System32\\', '\\Windows\\SysWOW64\\',
+                '\\Windows\\WinSxS\\', '\\Windows\\servicing\\', '\\ProgramData\\',
+                '\\Program Files\\Common Files\\', '\\Program Files (x86)\\Common Files\\'
+            ]
+        else:
+            # Linux/Unix system processes
+            system_process_names = [
+                # Core system processes
+                'init', 'kthreadd', 'ksoftirqd', 'migration', 'rcu_', 'watchdog',
+                
+                # systemd processes
+                'systemd', 'systemd-journald', 'systemd-udevd', 'systemd-resolved', 
+                'systemd-logind', 'systemd-oomd', 'systemd-networkd', 'systemd-timesyncd',
+                
+                # D-Bus processes
+                'dbus', 'dbus-daemon', 'dbus-launch',
+                
+                # Network and hardware management
+                'NetworkManager', 'ModemManager', 'wpa_supplicant', 'dhclient',
+                'polkitd', 'udisksd', 'upowerd', 'colord', 'accounts-daemon',
+                
+                # Desktop environment - GNOME
+                'gnome-shell', 'gnome-session-binary', 'gnome-session-ctl',
+                'gnome-keyring-daemon', 'gnome-shell-calendar-server',
+                'gnome-remote-desktop-daemon', 'gdm3', 'gdm-wayland-session',
+                
+                # GNOME Settings Daemon processes
+                'gsd-a11y-settings', 'gsd-color', 'gsd-datetime', 'gsd-housekeeping',
+                'gsd-keyboard', 'gsd-media-keys', 'gsd-power', 'gsd-print-notifications',
+                'gsd-printer', 'gsd-rfkill', 'gsd-screensaver-proxy', 'gsd-sharing',
+                'gsd-smartcard', 'gsd-sound', 'gsd-wacom', 'gsd-xsettings',
+                'gsd-disk-utility-notify',
+                
+                # GVFS (GNOME Virtual File System)
+                'gvfsd', 'gvfsd-trash', 'gvfsd-metadata', 'gvfsd-recent',
+                'gvfsd-network', 'gvfsd-dnssd', 'gvfsd-admin',
+                'gvfs-udisks2-volume-monitor', 'gvfs-afc-volume-monitor',
+                'gvfs-mtp-volume-monitor', 'gvfs-goa-volume-monitor',
+                'gvfs-gphoto2-volume-monitor',
+                
+                # Input methods and accessibility
+                'ibus-daemon', 'ibus-engine-simple', 'ibus-extension-gtk3',
+                'ibus-memconf', 'ibus-portal', 'ibus-x11',
+                'at-spi-bus-launcher', 'at-spi2-registryd',
+                
+                # Desktop portals and integration
+                'xdg-desktop-portal', 'xdg-desktop-portal-gnome', 'xdg-desktop-portal-gtk',
+                'xdg-document-portal', 'xdg-permission-store',
+                
+                # Evolution data services
+                'evolution-source-registry', 'evolution-calendar-factory',
+                'evolution-addressbook-factory', 'evolution-alarm-notify',
+                
+                # Other GNOME services
+                'goa-daemon', 'goa-identity-service', 'gcr-ssh-agent',
+                'dconf-service', 'tracker-miner-fs-3',
+                
+                # Audio/Media services
+                'pipewire', 'wireplumber', 'rtkit-daemon',
+                
+                # Print services
+                'cupsd', 'cups-browsed',
+                
+                # System services
+                'cron', 'rsyslogd', 'kerneloops', 'snapd', 'snapd-desktop-integration',
+                'power-profiles-daemon', 'switcheroo-control', 'fwupd', 'boltd',
+                'packagekitd'
+            ]
+            
+            # Linux system directories patterns
+            system_dirs = [
+                '/usr/lib/systemd/', '/usr/libexec/', '/usr/lib/gnome-',
+                '/usr/lib/gvfs/', '/usr/lib/evolution/', '/usr/lib/gsd-',
+                '/lib/systemd/', '/sbin/', '/usr/sbin/'
+            ]
         
         # Get list of running processes
         try:

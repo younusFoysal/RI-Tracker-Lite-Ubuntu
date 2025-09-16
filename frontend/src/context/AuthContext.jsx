@@ -14,10 +14,28 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const handleReady = () => setPywebviewReady(true);
 
-        if (window.pywebview) {
+        const checkPywebviewReady = () => {
+            // Check if both pywebview object and its API are available
+            return window.pywebview && 
+                   window.pywebview.api && 
+                   typeof window.pywebview.api.is_authenticated === 'function';
+        };
+
+        if (checkPywebviewReady()) {
             setPywebviewReady(true);
         } else {
             window.addEventListener('pywebviewready', handleReady);
+            
+            // Also check periodically in case the event doesn't fire
+            const checkInterval = setInterval(() => {
+                if (checkPywebviewReady()) {
+                    setPywebviewReady(true);
+                    clearInterval(checkInterval);
+                }
+            }, 100);
+            
+            // Clean up interval after 10 seconds to avoid infinite checking
+            setTimeout(() => clearInterval(checkInterval), 10000);
         }
 
         return () => {
@@ -29,18 +47,55 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const checkAuthStatus = async () => {
             try {
+                // Additional safety check to ensure the API methods exist
+                if (!window.pywebview?.api?.is_authenticated || !window.pywebview?.api?.get_current_user) {
+                    console.log('Auth API methods not yet available, retrying...');
+                    // Retry after a short delay
+                    setTimeout(checkAuthStatus, 500);
+                    return;
+                }
+
                 const isAuthResponse = await window.pywebview.api.is_authenticated();
-                if (isAuthResponse.authenticated) {
+                console.log('Auth check response:', isAuthResponse);
+                
+                if (isAuthResponse && isAuthResponse.authenticated) {
                     const userResponse = await window.pywebview.api.get_current_user();
-                    if (userResponse.success) {
+                    console.log('User data response:', userResponse);
+                    
+                    if (userResponse && userResponse.success && userResponse.user) {
                         setCurrentUser(userResponse.user);
                         setToken("token-exists");
+                        console.log('Authentication restored from stored data');
                     }
                 }
             } catch (error) {
                 console.error('Auth check error:', error);
+                // If the auth check fails, try one more time after a delay
+                setTimeout(async () => {
+                    try {
+                        if (window.pywebview?.api?.is_authenticated) {
+                            const retryResponse = await window.pywebview.api.is_authenticated();
+                            if (retryResponse && retryResponse.authenticated) {
+                                const userResponse = await window.pywebview.api.get_current_user();
+                                if (userResponse && userResponse.success && userResponse.user) {
+                                    setCurrentUser(userResponse.user);
+                                    setToken("token-exists");
+                                    console.log('Authentication restored on retry');
+                                }
+                            }
+                        }
+                    } catch (retryError) {
+                        console.error('Auth retry failed:', retryError);
+                    } finally {
+                        setLoading(false);
+                    }
+                }, 1000);
+                return;
             } finally {
-                setLoading(false);
+                // Only set loading to false if we're not retrying
+                if (window.pywebview?.api?.is_authenticated) {
+                    setLoading(false);
+                }
             }
         };
 

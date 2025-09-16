@@ -1,0 +1,952 @@
+{
+    "success": true,
+    "message": "Sessions retrieved successfully!",
+    "data": [
+        {
+            "_id": "68c93f4e60601be24a5296b3",
+            "employeeId": "687c77e6873a193e1f6cff43",
+            "companyId": "684dad11ea4ab8c806721341",
+            "startTime": "2025-09-16T10:43:08.717Z",
+            "activeTime": 95,
+            "idleTime": 55,
+            "screenshots": [
+                {
+                    "timestamp": "2025-09-16T10:45:35.745Z",
+                    "imageUrl": "https://remoteintegrity.s3.us-east-1.amazonaws.com/tracker_app09-2025/16/tmp6ri2trzf-2da45364-0ccb-4902-9d5f-979c7f0ac621.png",
+                    "_id": "68c93fec60601be24a5296c2",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                }
+            ],
+            "applications": [
+                {
+                    "name": "init",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296c3",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "systemd-journald",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296c4",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "systemd-udevd",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296c5",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "systemd-oomd",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296c6",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "systemd-resolved",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296c7",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gnome-remote-desktop-daemon",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296c8",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "polkitd",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296c9",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "power-profiles-daemon",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296ca",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "snapd",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296cb",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "accounts-daemon",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296cc",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "cron",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296cd",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "switcheroo-control",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296ce",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "systemd-logind",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296cf",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "udisksd",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296d0",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "rsyslogd",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296d1",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "NetworkManager",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296d2",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "wpa_supplicant",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296d3",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "ModemManager",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296d4",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "cupsd",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296d5",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "python3",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296d6",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "VBoxDRMClient",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296d7",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "dbus",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296d8",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gdm3",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296d9",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "cups-browsed",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296da",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "kerneloops",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296db",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "rtkit-daemon",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296dc",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "colord",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296dd",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "upowerd",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296de",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "systemd",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296df",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "pipewire",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296e0",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "wireplumber",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296e1",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gcr-ssh-agent",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296e2",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "VBoxClient",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296e3",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "dbus-daemon",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296e4",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "xdg-document-portal",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296e5",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "xdg-permission-store",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296e6",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gnome-keyring-daemon",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296e7",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gdm-wayland-session",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296e8",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gnome-session-binary",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296e9",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gnome-session-ctl",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296ea",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gvfsd",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296eb",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "at-spi-bus-launcher",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296ec",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gnome-shell",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296ed",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "at-spi2-registryd",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296ee",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gnome-shell-calendar-server",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296ef",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "evolution-source-registry",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296f0",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gjs-console",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296f1",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "goa-daemon",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296f2",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "ibus-daemon",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296f3",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gsd-a11y-settings",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296f4",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gsd-color",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296f5",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gsd-datetime",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296f6",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gsd-housekeeping",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296f7",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gsd-keyboard",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296f8",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "evolution-alarm-notify",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296f9",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gsd-media-keys",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296fa",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gsd-disk-utility-notify",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296fb",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "goa-identity-service",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296fc",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gsd-power",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296fd",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gsd-print-notifications",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296fe",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gsd-rfkill",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a5296ff",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gsd-screensaver-proxy",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529700",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gsd-sharing",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529701",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gsd-smartcard",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529702",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gsd-sound",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529703",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gsd-wacom",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529704",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "ibus-memconf",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529705",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "ibus-extension-gtk3",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529706",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "ibus-portal",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529707",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gsd-printer",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529708",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "evolution-calendar-factory",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529709",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gvfs-udisks2-volume-monitor",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a52970a",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "snapd-desktop-integration",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a52970b",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gvfs-afc-volume-monitor",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a52970c",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "evolution-addressbook-factory",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a52970d",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gvfs-mtp-volume-monitor",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a52970e",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gvfs-goa-volume-monitor",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a52970f",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gvfs-gphoto2-volume-monitor",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529710",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "Xwayland",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529711",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "ibus-engine-simple",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529712",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "dconf-service",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529713",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gvfsd-trash",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529714",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "xdg-desktop-portal",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529715",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "tracker-miner-fs-3",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529716",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "xdg-desktop-portal-gnome",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529717",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gsd-xsettings",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529718",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gvfsd-metadata",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529719",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "ibus-x11",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a52971a",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "xdg-desktop-portal-gtk",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a52971b",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "mutter-x11-frames",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a52971c",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "jetbrains-toolbox",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a52971d",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gvfsd-recent",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a52971e",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "fwupd",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a52971f",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "update-notifier",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529720",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "VBoxService",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529721",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gvfsd-network",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529722",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gvfsd-dnssd",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529723",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "dash",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529724",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gvfsd-admin",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529725",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gnome-text-editor",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529726",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "pycharm",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529727",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "fsnotifier",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529728",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "jcef_helper",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529729",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "node",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a52972a",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "embeddings-server",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a52972b",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "bash",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a52972c",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "boltd",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a52972d",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gnome-terminal-server",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a52972e",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "nautilus",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a52972f",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "packagekitd",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529730",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "ri-tracker",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529731",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "QtWebEngineProcess",
+                    "timeSpent": 161,
+                    "timestamp": "2025-09-16T10:45:45.284Z",
+                    "_id": "68c93fec60601be24a529732",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                },
+                {
+                    "name": "gnome-screenshot",
+                    "timeSpent": 5,
+                    "timestamp": "2025-09-16T10:45:34.826Z",
+                    "_id": "68c93fec60601be24a529733",
+                    "createdAt": "2025-09-16T10:46:04.823Z",
+                    "updatedAt": "2025-09-16T10:46:04.823Z"
+                }
+            ],
+            "links": [],
+            "notes": "Session from RI Tracker Lite APP v1.",
+            "userNote": "I am working on Task",
+            "isManual": false,
+            "timezone": "UTC",
+            "isDeleted": false,
+            "mouseActivityRate": 4,
+            "keyboardActivityRate": 0,
+            "lastActivity": "2025-09-16T10:46:04.822Z",
+            "createdAt": "2025-09-16T10:43:26.211Z",
+            "updatedAt": "2025-09-16T10:46:04.823Z",
+            "__v": 0
+        }
+    ],
+    "meta": {
+        "totalPages": 1,
+        "currentPage": 1,
+        "total": 1
+    },
+    "statistics": {
+        "totalActiveTime": 95,
+        "totalIdleTime": 55,
+        "totalTime": 150,
+        "activePercentage": 63
+    }
+}

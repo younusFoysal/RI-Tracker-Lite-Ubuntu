@@ -44,9 +44,9 @@ except Exception:
     GI_AVAILABLE = False
 
 APP_NAME = "RI_Tracker"
-APP_VERSION = "1.0.15"  # Current version of the application
+APP_VERSION = "1.0.0"  # Current version of the application
 # GITHUB_REPO = "younusFoysal/RI-Tracker-Lite"
-GITHUB_REPO = "RemoteIntegrity/RI-Tracker-Lite-Releases"
+GITHUB_REPO = "RemoteIntegrity/RI-Tracker-Lite-Ubuntu-Releases"
 DATA_DIR = os.path.join(os.getenv('LOCALAPPDATA') or os.path.expanduser("~/.config"), APP_NAME)
 
 # Ensure the directory exists
